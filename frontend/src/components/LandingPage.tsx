@@ -81,9 +81,9 @@ export default function LandingPage() {
                         transition={{ delay: 0.6, duration: 1 }}
                         className="mt-16 flex flex-col sm:flex-row gap-6 relative z-10"
                     >
-                        <button className="bg-white text-black px-12 py-5 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-all shadow-2xl shadow-white/10">
-                            Build Your Node
-                        </button>
+                        <a href="/simulation" className="bg-white text-black px-12 py-5 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-all shadow-2xl shadow-white/10 text-center">
+                            Launch Simulation
+                        </a>
                         <button className="bg-white/5 backdrop-blur-md text-white border border-white/10 px-12 py-5 rounded-full font-bold text-sm tracking-widest uppercase hover:bg-white/10 transition-all">
                             Read Architecture
                         </button>

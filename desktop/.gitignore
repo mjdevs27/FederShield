@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build and Dist
+dist/
+out/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Electron and native builds
+*.sublime-project
+*.sublime-workspace
+.vscdb
+.history
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment variables
+.env
+.env.local
