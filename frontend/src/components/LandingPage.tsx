@@ -1,214 +1,195 @@
+'use client';
+
 import React from 'react';
+import ThreeModel from './ThreeModel';
+import { motion } from 'framer-motion';
 
-// --- Types & Interfaces ---
-interface FeatureCardProps {
-    title: string;
-    description: string;
-    imageUrl: string;
-    transformClasses: string;
-    isCenter?: boolean;
-}
-
-// --- Sub-components ---
-const FeatureCard: React.FC<FeatureCardProps> = ({
-    title,
-    description,
-    imageUrl,
-    transformClasses,
-    isCenter = false
-}) => {
+export default function LandingPage() {
     return (
-        <div
-            className={`absolute transition-all duration-500 hover:-translate-y-4 hover:z-50 ${transformClasses} ${isCenter
-                ? 'w-64 h-80 bg-themeDark border-2 border-themeYellow shadow-[0_25px_50px_-12px_rgba(0,0,0,0.7)] z-30'
-                : 'w-48 h-64 bg-gray-900 border border-gray-700 shadow-xl hidden md:block'
-                } rounded-2xl overflow-hidden group`}
-        >
-            <img
-                src={imageUrl}
-                alt={title}
-                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${isCenter ? 'opacity-40' : 'opacity-60'}`}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-[#171717]/80 to-transparent flex flex-col justify-end p-5 text-left">
-                <h3 className={`text-white font-serif italic mb-2 ${isCenter ? 'text-2xl' : 'text-lg'}`}>
-                    {title}
-                </h3>
-                <p className={`text-white/70 leading-relaxed ${isCenter ? 'text-sm' : 'text-xs'}`}>
-                    {description}
-                </p>
-            </div>
-        </div>
-    );
-};
+        <div className="bg-[#050505] text-white font-sans selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden">
 
-// --- Main Page Component ---
-export default function FedAuraLanding() {
-    return (
-        <div className="bg-themeDark text-white antialiased overflow-x-hidden selection:bg-themeYellow selection:text-themeDark font-sans">
+            {/* 1. HERO SECTION - ATMOSPHERIC DARK */}
+            <section className="relative min-h-[110vh] flex flex-col pt-6 px-6 lg:px-12">
 
-            {/* HERO SECTION */}
-            <section className="relative min-h-screen flex flex-col items-center justify-between pb-12 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(to bottom, rgba(23, 23, 23, 0.4), rgba(23, 23, 23, 0.9)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2832&auto=format&fit=crop')" }}>
+                {/* Visual Background - Deep Glows */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-[-20%] left-[-10%] w-[1000px] h-[1000px] bg-indigo-600/10 rounded-full blur-[160px]"></div>
+                    <div className="absolute bottom-[10%] right-[-5%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[140px]"></div>
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+                </div>
 
-                {/* Navigation */}
-                <nav className="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center z-10">
+                {/* Navigation - Minimalist Glass */}
+                <nav className="relative z-50 flex items-center justify-between py-6 max-w-7xl mx-auto w-full">
                     <div className="flex items-center gap-3">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-white">
-                            <path d="M12 2L2 22H22L12 2Z" fill="currentColor" />
-                        </svg>
-                        <span className="font-bold text-xl tracking-wide">FedAura</span>
+                        <div className="w-8 h-8 bg-linear-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                            <div className="w-3 h-3 bg-white rounded-full"></div>
+                        </div>
+                        <span className="font-medium text-xl tracking-[0.2em] text-white/90 uppercase">FedAura</span>
                     </div>
-                    <div className="hidden md:flex bg-white/10 backdrop-blur-md rounded-full px-8 py-3 border border-white/10 gap-8 text-sm font-medium text-white/80 shadow-lg">
-                        <a href="#architecture" className="hover:text-white transition">Architecture</a>
-                        <a href="#aggregation" className="hover:text-white transition">Aggregation</a>
-                        <a href="#privacy" className="hover:text-white transition">Privacy</a>
+
+                    <div className="hidden lg:flex items-center gap-10 bg-white/5 backdrop-blur-2xl border border-white/10 px-8 py-3 rounded-full shadow-2xl">
+                        {['Compute', 'Security', 'Network', 'Pricing'].map((item) => (
+                            <a key={item} href="#" className="text-[11px] font-bold text-white/40 hover:text-white transition-all tracking-[0.15em] uppercase">
+                                {item}
+                            </a>
+                        ))}
                     </div>
-                    <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full px-6 py-2.5 text-sm font-semibold transition">
-                        View Code
+
+                    <button className="text-white bg-white/5 border border-white/10 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-white hover:text-black transition-all active:scale-95 tracking-widest uppercase">
+                        Sign In
                     </button>
                 </nav>
 
-                {/* Hero Content */}
-                <div className="text-center max-w-5xl px-4 flex-grow flex flex-col justify-start mt-16 items-center z-10">
-                    <h1 className="text-6xl md:text-8xl font-semibold tracking-tight mb-6 leading-[1.1]">
-                        Train models privately <br />
+                {/* Massive Hero Content */}
+                <div className="relative z-10 flex flex-col items-center justify-center flex-grow py-20">
 
-                    </h1>
-                    <span className="text-4xl md:text-6xl font-serif italic font-light text-white/90 font-light">Analyze, aggregate, scale</span>
-                    <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-12 font-light tracking-wide leading-relaxed">
-                        An asynchronous federated learning copilot that handles unreliable clients, mitigates malicious nodes, and achieves convergence natively.
-                    </p>
-                    <button className="bg-white text-themeDark rounded-full pl-8 pr-2 py-2 flex items-center gap-6 hover:scale-105 transition-transform duration-300 font-bold text-sm uppercase tracking-wider shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-                        Start Practice
-                        <div className="bg-themeDark rounded-full p-3">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
+                    {/* Top Detail */}
+                    {/* <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-[0.3em] mb-12"
+                    >
+                        Federated AI Infrastructure
+                    </motion.div> */}
+
+                    <div className="relative w-full max-w-6xl text-center">
+                        {/* THE TITLE - MIXED WEIGHTS */}
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-[12vw] md:text-[8vw] lg:text-[7vw] leading-[0.9] tracking-[-0.04em] relative"
+                        >
+                            <span className="font-extralight text-white/40">Secure</span> <br />
+                            <span className="font-extrabold text-white">Distributed Data.</span>
+                        </motion.h1>
+
+                        {/* SUBTITLE */}
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.4, duration: 1 }}
+                            className="mt-12 text-white/40 text-lg md:text-xl max-w-xl mx-auto font-light leading-relaxed tracking-wide"
+                        >
+                            The protocol for private machine learning. Train resilient global models across millions of devices without exposing raw intelligence.
+                        </motion.p>
+                    </div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6, duration: 1 }}
+                        className="mt-16 flex flex-col sm:flex-row gap-6 relative z-10"
+                    >
+                        <button className="bg-white text-black px-12 py-5 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-all shadow-2xl shadow-white/10">
+                            Build Your Node
+                        </button>
+                        <button className="bg-white/5 backdrop-blur-md text-white border border-white/10 px-12 py-5 rounded-full font-bold text-sm tracking-widest uppercase hover:bg-white/10 transition-all">
+                            Read Architecture
+                        </button>
+                    </motion.div>
+
+                    {/* THE 3D MODEL - MASSIVE BACKGROUND PRESENCE */}
+                    <div className="absolute inset-x-0 top-[50%] md:top-[80%] h-[900px] flex justify-center z-0 pointer-events-none">
+                        <div className="relative w-full h-full max-w-[1200px]">
+                            {/* Layered Glow behind model */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[180px]"></div>
+
+                            <ThreeModel
+                                width="100%"
+                                height="100%"
+                                modelScale={0.9}
+                                modelPosition={[0, -2, 0]}
+                                className="opacity-70 saturate-[0.8] brightness-[1.2]"
+                            />
                         </div>
-                    </button>
+                    </div>
+
+                    {/* Atmospheric Floating Labels */}
+                    <div className="hidden lg:block absolute inset-0 pointer-events-none">
+                        <motion.div
+                            animate={{ y: [0, -15, 0] }}
+                            transition={{ duration: 5, repeat: Infinity }}
+                            className="absolute top-1/4 left-20 border-l border-white/20 pl-4 py-2"
+                        >
+                            <span className="block text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Status</span>
+                            <span className="text-xs font-bold text-indigo-400">ENCRYPTED_FLOW</span>
+                        </motion.div>
+
+                        <motion.div
+                            animate={{ y: [0, 15, 0] }}
+                            transition={{ duration: 6, repeat: Infinity }}
+                            className="absolute bottom-1/4 right-20 border-r border-white/20 pr-4 py-2 text-right"
+                        >
+                            <span className="block text-[10px] uppercase tracking-[0.3em] text-white/30 mb-1">Throughput</span>
+                            <span className="text-xs font-bold text-purple-400">1.2 GB/S REDUCED</span>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* CARDS SECTION */}
-            <section className="bg-white text-themeDark py-32 relative">
-                <div className="max-w-7xl mx-auto px-6 text-center">
+            {/* 2. VALUE GRID - MINIMALIST */}
+            <section className="py-20 px-10 border-t border-white/5 bg-[#080808]">
+                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+                    {[
+                        { val: "2M+", label: "ACTIVE DEVICES" },
+                        { val: "100%", label: "DATA PRIVACY" },
+                        { val: "14ms", label: "NODE LATENCY" },
+                        { val: "AES-GCM", label: "HANDSHAKE" }
+                    ].map((s, i) => (
+                        <div key={i} className="flex flex-col items-center">
+                            <span className="text-2xl font-extralight tracking-widest text-white mb-2">{s.val}</span>
+                            <span className="text-[10px] font-bold text-white/30 tracking-[0.4em] uppercase">{s.label}</span>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
-                    <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-gray-200 bg-gray-50 text-xs font-bold uppercase tracking-[0.15em] mb-10">
-                        <span className="w-2 h-2 rounded-full bg-themeDark"></span>
-                        How FedAura works
-                    </div>
-
-                    <h2 className="text-5xl md:text-7xl font-semibold mb-24 leading-tight tracking-tight">
-                        From siloed data to insights — <br />
-                        <span className="font-serif italic font-light text-6xl md:text-8xl">effortlessly</span>
+            {/* 3. CORE ARCHITECTURE - VISUAL CARDS */}
+            <section className="py-40 px-6 max-w-7xl mx-auto">
+                <div className="flex flex-col items-center mb-32">
+                    <h2 className="text-4xl md:text-5xl font-extralight text-center tracking-tighter text-white/90">
+                        Designed for <span className="font-extrabold text-white">Scale.</span>
                     </h2>
-
-                    {/* Fanned Cards Layout Container */}
-                    <div className="relative h-[360px] flex justify-center items-end mt-12 mx-auto max-w-4xl">
-
-                        <FeatureCard
-                            title="Async Updates"
-                            description="Train continuously without waiting for straggler nodes."
-                            imageUrl="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop"
-                            transformClasses="-translate-x-[220px] -rotate-12 translate-y-8 z-10"
-                        />
-
-                        <FeatureCard
-                            title="Robust Aggregation"
-                            description="Utilizes trimmed mean and median to prevent poisoning."
-                            imageUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop"
-                            transformClasses="-translate-x-[120px] -rotate-6 translate-y-3 z-20 w-56 h-72"
-                        />
-
-                        {/* Center Card */}
-                        <FeatureCard
-                            title="Total Privacy"
-                            description="Raw data never leaves the device. Only secure gradients are shared."
-                            imageUrl="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop"
-                            transformClasses="z-30 scale-105"
-                            isCenter={true}
-                        />
-
-                        <FeatureCard
-                            title="Threat Mitigation"
-                            description="Automatically detects and isolates malicious clients."
-                            imageUrl="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=800&auto=format&fit=crop"
-                            transformClasses="translate-x-[120px] rotate-6 translate-y-3 z-20 w-56 h-72"
-                        />
-
-                        <FeatureCard
-                            title="Heterogeneous"
-                            description="Maintains high convergence despite non-IID distributions."
-                            imageUrl="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop"
-                            transformClasses="translate-x-[220px] rotate-12 translate-y-8 z-10"
-                        />
-                    </div>
                 </div>
-            </section>
 
-            {/* DASHBOARD SECTION */}
-            <section className="bg-themeDark py-32 relative bg-cover bg-center" style={{ backgroundImage: "linear-gradient(to bottom, rgba(23, 23, 23, 1), rgba(23, 23, 23, 0.7)), url('https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?q=80&w=2874&auto=format&fit=crop')" }}>
-                <div className="max-w-7xl mx-auto px-6">
-
-                    <div className="text-center mb-20">
-                        <h2 className="text-5xl md:text-6xl font-semibold mb-6 text-white tracking-tight">
-                            Built for clarity at <span className="font-serif italic font-light">every step</span>
-                        </h2>
-                        <p className="text-white/60 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-                            Performance evaluation showing training stability and verifiable results from our production prototype.
+                <div className="grid md:grid-cols-12 gap-6">
+                    <div className="md:col-span-8 bg-white/[0.02] border border-white/5 p-12 rounded-[3rem] hover:bg-white/[0.04] transition-all">
+                        <div className="w-12 h-12 bg-indigo-600 rounded-full mb-8 flex items-center justify-center shadow-lg shadow-indigo-600/20">
+                            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+                        </div>
+                        <h3 className="text-3xl font-bold mb-6">Asynchronous Aggregation</h3>
+                        <p className="text-white/40 text-lg leading-relaxed max-w-lg font-light">
+                            Minimize training overhead with real-time gradient updates. Our protocol handles millions of edge connections without central server synchronization bottlenecks.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Chart Panel */}
-                        <div className="md:col-span-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-10 relative overflow-hidden">
-                            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)", backgroundSize: "30px 30px" }}></div>
-
-                            <div className="relative z-10 h-full flex flex-col">
-                                <div className="flex justify-between text-sm text-white/40 mb-8 font-mono tracking-widest uppercase">
-                                    <span>100%</span>
-                                    <span>Convergence (Non-IID)</span>
-                                </div>
-
-                                <div className="flex-grow relative flex items-end mb-8">
-                                    {/* Mock SVG Line Chart */}
-                                    <svg className="w-full h-48" viewBox="0 0 500 150" preserveAspectRatio="none">
-                                        <path d="M0,130 C40,120 60,140 100,100 C140,60 160,80 200,60 C240,40 280,70 320,50 C360,30 400,20 450,40 L500,20" fill="none" stroke="#FDE260" strokeWidth="4" style={{ filter: "drop-shadow(0px 8px 12px rgba(253, 226, 96, 0.5))" }} />
-                                    </svg>
-                                </div>
-
-                                <div className="mt-auto border-t border-white/10 pt-8">
-                                    <h3 className="text-white font-serif italic text-3xl mb-3">Byzantine Fault Tolerance</h3>
-                                    <p className="text-white/60 text-base leading-relaxed">
-                                        Our robust aggregation algorithm continuously filters out noise and poisoned updates from malicious clients, ensuring stable training curves even under 30% corruption.
-                                    </p>
-                                </div>
+                    <div className="md:col-span-4 bg-indigo-600 p-12 rounded-[3rem] text-white flex flex-col justify-between hover:scale-105 transition-all duration-500">
+                        <div>
+                            <div className="w-12 h-12 bg-white/20 rounded-full mb-8 flex items-center justify-center">
+                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                             </div>
+                            <h3 className="text-3xl font-bold mb-6 tracking-tight">Zero-Knowledge Verification</h3>
                         </div>
-
-                        {/* Side Panels */}
-                        <div className="col-span-1 flex flex-col gap-8">
-                            <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-10 flex-grow flex flex-col justify-end relative overflow-hidden group">
-                                <div className="absolute inset-0 bg-themeBlue mix-blend-overlay opacity-20 transition-opacity duration-500 group-hover:opacity-40"></div>
-                                <h3 className="text-white font-serif italic text-3xl mb-3 relative z-10">Client Resilience</h3>
-                                <p className="text-white/60 text-sm leading-relaxed relative z-10">
-                                    Maintains high resilience globally, functioning seamlessly asynchronously even when high volumes of clients drop off mid-training.
-                                </p>
-                            </div>
-
-                            <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-10 flex flex-col justify-between">
-                                <div>
-                                    <h3 className="text-white font-serif italic text-2xl mb-2">Adaptive Mitigation</h3>
-                                    <p className="text-white/60 text-sm">Dynamic adjustment of trim thresholds.</p>
-                                </div>
-                                <div className="relative w-full h-3 bg-black/40 rounded-full mt-8 border border-white/5">
-                                    <div className="absolute top-0 left-0 h-full bg-themeGreen rounded-full w-3/4 shadow-[0_0_15px_rgba(113,254,17,0.4)]"></div>
-                                    <div className="absolute top-1/2 left-3/4 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-themeYellow border-4 border-themeDark rounded-full cursor-pointer hover:scale-125 transition-transform"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <p className="text-white/80 font-medium">Verify gradient integrity without viewing local datasets.</p>
                     </div>
                 </div>
             </section>
+
+            {/* 4. FUTURISTIC FOOTER */}
+            <footer className="py-20 px-10 border-t border-white/5">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center opacity-40 hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white mb-6 md:mb-0">FedAura Core Protocol 2026</span>
+                    <div className="flex gap-12 font-bold text-[10px] tracking-widest uppercase">
+                        <a href="#" className="hover:text-indigo-400">Terminal</a>
+                        <a href="#" className="hover:text-indigo-400">Network</a>
+                        <a href="#" className="hover:text-indigo-400">Status</a>
+                    </div>
+                </div>
+                <div className="text-center mt-20 opacity-5">
+                    <h1 className="text-[20vw] font-black leading-none tracking-tighter">FEDAURA</h1>
+                </div>
+            </footer>
         </div>
     );
 }

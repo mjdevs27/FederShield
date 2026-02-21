@@ -1,11 +1,11 @@
 // import FedAuraLanding from "@/components/LandingPage";
 
-import LandingPage4 from '@/components/LandingPage4';
+import LandingPage from '@/components/LandingPage';
 
 export default function Home() {
   return (
     <main>
-      <LandingPage4 />
+      <LandingPage />
     </main>
   );
 }
