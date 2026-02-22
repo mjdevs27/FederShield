@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Form, Response
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 import uuid
+import os
 
 import models, schemas, database, runtime_manager
 
@@ -14,10 +15,11 @@ app = FastAPI(title="FedAura Notebook API")
 # CORS Setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-MODEL-VERSION", "X-BASE-MODEL-ID"],
 )
 
 # Dependency
@@ -84,6 +86,87 @@ def run_code(request: schemas.ExecutionRequest):
         stderr=result.get("stderr"),
         error=result.get("error"),
         plots=result.get("plots", [])
+    )
+
+@app.post("/api/v1/client/register", response_model=schemas.ClientRegisterResponse)
+def register_client(request: schemas.ClientRegisterRequest, db: Session = Depends(get_db)):
+    exp = db.query(models.Experiment).filter(models.Experiment.id == request.experiment_id).first()
+    if not exp:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+    
+    client = models.Client(
+        experiment_id=request.experiment_id,
+        device_info=request.device_info
+    )
+    db.add(client)
+    db.commit()
+    db.refresh(client)
+    
+    return schemas.ClientRegisterResponse(
+        client_id=client.id,
+        current_model_version=exp.current_model_version,
+        aggregation_method=exp.aggregation_method,
+        clip_norm=exp.clip_norm,
+        enable_dp=exp.enable_dp
+    )
+
+@app.get("/api/v1/client/model/latest")
+def get_latest_model(experiment_id: str, db: Session = Depends(get_db)):
+    exp = db.query(models.Experiment).filter(models.Experiment.id == experiment_id).first()
+    if not exp:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+    
+    # In a real app, this would return a specific file for the experiment
+    if not os.path.exists(DUMMY_MODEL_PATH):
+        raise HTTPException(status_code=404, detail="Model file not found")
+    
+    with open(DUMMY_MODEL_PATH, "rb") as f:
+        content = f.read()
+    
+    return Response(
+        content=content,
+        media_type="application/octet-stream",
+        headers={
+            "X-MODEL-VERSION": str(exp.current_model_version),
+            "X-BASE-MODEL-ID": exp.base_model_id
+        }
+    )
+
+@app.post("/api/v1/client/update", response_model=schemas.UpdateResponse)
+async def upload_update(
+    experiment_id: str = Form(...),
+    client_id: str = Form(...),
+    parent_model_version: int = Form(...),
+    adapter: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    # Validate client and experiment
+    client = db.query(models.Client).filter(models.Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+    
+    # Save the adapter file
+    update_id = str(uuid.uuid4())
+    save_path = os.path.join(STORAGE_PATH, "updates", f"{update_id}.safetensors")
+    with open(save_path, "wb") as f:
+        f.write(await adapter.read())
+    
+    # Create database entry
+    update = models.ModelUpdate(
+        id=update_id,
+        client_id=client_id,
+        experiment_id=experiment_id,
+        parent_model_version=parent_model_version,
+        l2_norm=1.0, # Dummy norm calculation
+        status="queued"
+    )
+    db.add(update)
+    db.commit()
+    
+    return schemas.UpdateResponse(
+        status="queued",
+        queued_update_id=update_id,
+        l2_norm=1.0
     )
 
 @app.post("/api/notebooks/{notebook_id}/restart")

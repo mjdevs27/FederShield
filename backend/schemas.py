@@ -35,3 +35,21 @@ class ExecutionResponse(BaseModel):
     stderr: Optional[str] = None
     error: Optional[str] = None
     plots: List[str] = []
+
+# --- Federated Learning Schemas ---
+
+class ClientRegisterRequest(BaseModel):
+    experiment_id: str
+    device_info: str
+
+class ClientRegisterResponse(BaseModel):
+    client_id: str
+    current_model_version: int
+    aggregation_method: str
+    clip_norm: float
+    enable_dp: bool
+
+class UpdateResponse(BaseModel):
+    status: str
+    queued_update_id: str
+    l2_norm: float

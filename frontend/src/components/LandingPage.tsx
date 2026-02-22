@@ -33,6 +33,18 @@ export default function LandingPage() {
                                 {item}
                             </a>
                         ))}
+                        <div className="w-px h-4 bg-white/10 mx-2"></div>
+                        <a href="/simulation" className="text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-all tracking-[0.15em] uppercase">
+                            Simulation
+                        </a>
+                        <div className="w-px h-4 bg-white/10 mx-2"></div>
+                        <a href="/fl" className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-all tracking-[0.15em] uppercase">
+                            Edge Learning
+                        </a>
+                        <div className="w-px h-4 bg-white/10 mx-2"></div>
+                        <a href="/node-simulation" className="text-[11px] font-bold text-purple-400 hover:text-purple-300 transition-all tracking-[0.15em] uppercase">
+                            Node Sim
+                        </a>
                     </div>
 
                     <button className="text-white bg-white/5 border border-white/10 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-white hover:text-black transition-all active:scale-95 tracking-widest uppercase">

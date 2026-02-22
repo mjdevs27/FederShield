@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FedAura - Federated Node</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="glow-bg"></div>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <span class="shield-icon">🛡️</span>
+        <h1>FedAura</h1>
+      </div>
+      <div class="system-status">
+        <span class="status-indicator"></span>
+        <p class="subtitle">SECURE_FEDERATION_NODE // AKTIV</p>
+      </div>
+    </header>
+
+    <main id="auth-section">
+      <div class="card main-card">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h3>Link Identity</h3>
+          <p class="description">Securely connect your browser node to the global federation aggregator.</p>
+
+          <div class="input-group">
+            <label for="token">Node Access Token</label>
+            <div class="input-wrapper">
+              <input type="password" id="token" placeholder="fa_live_****************">
+              <span class="input-glow"></span>
+            </div>
+          </div>
+
+          <div class="divider">
+            <span>NETWORK_HANDSHAKE</span>
+          </div>
+
+          <div class="input-group">
+            <label for="model-id">Target Model Architecture</label>
+            <select id="model-id">
+              <option value="finbert">ProsusAI / FinBERT v1.0</option>
+              <option value="resnet50">Vision / ResNet50 v2.1</option>
+              <option value="gpt2-small">Generative / GPT2-Small</option>
+            </select>
+          </div>
+
+          <button id="join-btn" class="primary-btn">
+            <span>Initialize Node</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <button id="scan-qr" class="secondary-btn">
+            <span>📷</span> Scan QR Credentials
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <main id="status-section" class="hidden">
+      <div class="card success-card">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <div class="status-header">
+            <div class="status-badge">
+              <span class="status-dot pulse"></span>
+              LIFELINE_CONNECTED
+            </div>
+          </div>
+
+          <div class="session-display">
+            <div class="display-row">
+              <span class="d-label">ACTIVE_MODEL</span>
+              <span class="d-value" id="active-model">FinBERT</span>
+            </div>
+            <div class="display-row">
+              <span class="d-label">ENCRYPTION</span>
+              <span class="d-value">AES-256-GCM</span>
+            </div>
+          </div>
+
+          <button id="open-panel" class="primary-btn">Enter Workspace</button>
+          <button id="disconnect" class="ghost-btn">Terminate Session</button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-msg">
+        <span class="lock-icon">🔒</span>
+        <p>ZERO_KNOWLEDGE_PROOF_ENABLED</p>
+      </div>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

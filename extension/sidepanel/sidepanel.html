@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FederShield - Training Dashboard</title>
+    <link rel="stylesheet" href="sidepanel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="sidebar-container">
+        <header class="main-header">
+            <div class="logo-group">
+                <span class="logo-shield">🛡️</span>
+                <h2>FedAura</h2>
+            </div>
+            <div class="model-badge" id="current-model-badge">FinBERT v1.0.4</div>
+        </header>
+
+        <div class="scroll-area">
+            <!-- Section 1: Dataset -->
+            <section class="workflow-card" id="step-dataset">
+                <div class="card-header">
+                    <span class="step-num">1</span>
+                    <h3>LOCAL_DATASET</h3>
+                </div>
+                <div class="card-content">
+                    <div id="drop-zone" class="drop-zone">
+                        <span class="icon">📁</span>
+                        <p>Drag & Drop CSV / Images</p>
+                        <p class="small">Data never leaves this computer</p>
+                        <input type="file" id="file-input" hidden multiple>
+                        <button class="secondary-btn btn-sm" id="select-files-btn">Select Files</button>
+                    </div>
+
+                    <div id="dataset-health" class="health-panel hidden">
+                        <div class="health-score">
+                            <span class="label">Dataset Health</span>
+                            <span class="score" id="health-score">94/100</span>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="s-label">Samples</span>
+                                <span class="s-val" id="sample-count">1,240</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="s-label">Labels</span>
+                                <span class="s-val" id="label-count">2</span>
+                            </div>
+                        </div>
+                        <div class="histogram" id="histogram">
+                            <!-- JS will inject bars -->
+                        </div>
+                        <div class="health-msg success-msg">✓ Ready for training</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Training -->
+            <section class="workflow-card disabled" id="step-train">
+                <div class="card-header">
+                    <span class="step-num">2</span>
+                    <h3>BROWSER_TRAINING</h3>
+                </div>
+                <div class="card-content">
+                    <div class="training-info">
+                        <p class="method">Method: <strong>Head-Only Fine-tuning</strong></p>
+                        <p class="device">Hardware: <span id="hardware-accel">WebGPU (Detected)</span></p>
+                    </div>
+
+                    <div class="progress-container hidden" id="training-progress-container">
+                        <div class="progress-info">
+                            <span id="epoch-status">Epoch 1/5</span>
+                            <span id="loss-val">Loss: 0.422</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="training-fill"></div>
+                        </div>
+                    </div>
+
+                    <button class="primary-btn" id="start-train-btn" disabled>Start Training</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Model PR -->
+            <section class="workflow-card disabled" id="step-pr">
+                <div class="card-header">
+                    <span class="step-num">3</span>
+                    <h3>SUBMIT_PR</h3>
+                </div>
+                <div class="card-content">
+                    <div class="pr-checks">
+                        <div class="check-item passed">
+                            <span>✓ Delta Norm Safety</span>
+                        </div>
+                        <div class="check-item passed">
+                            <span>✓ Key Match (Head-only)</span>
+                        </div>
+                        <div class="check-item warning">
+                            <span>! Minor Class Imbalance</span>
+                        </div>
+                    </div>
+                    <div class="delta-info">
+                        <p><strong>Delta Package:</strong> <span id="delta-size">142 KB</span></p>
+                        <p class="small">Only weight gradients will be uploaded.</p>
+                    </div>
+                    <button class="primary-btn" id="submit-pr-btn" disabled>Submit Model PR</button>
+                </div>
+            </section>
+
+            <!-- Live Feed -->
+            <section class="feed-card">
+                <div class="feed-header">
+                    <h3>FEEDS / LIVE_SYNC</h3>
+                    <span class="live-dot"></span>
+                </div>
+                <div class="feed-list" id="feed-list">
+                    <div class="feed-item system">
+                        <span class="time">SECURE_SYNC</span>
+                        <p>Node authentication verified. Joined <strong>FED_NETWORK_01</strong>.</p>
+                    </div>
+                </div>
+                <div class="aggregation-buffer">
+                    <div class="buffer-info">
+                        <span>NETWORK_AGGREGRATION</span>
+                        <span>42/100</span>
+                    </div>
+                    <div class="buffer-bar">
+                        <div class="buffer-fill" style="width: 42%"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Status Bar -->
+        <footer class="side-footer">
+            <div class="connection-status">
+                <span class="status-indicator online"></span>
+                <span>Connected to central-hub.fedshield.ai</span>
+            </div>
+        </footer>
+    </div>
+    <script src="sidepanel.js"></script>
+</body>
+
+</html>
