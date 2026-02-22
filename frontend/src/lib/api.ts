@@ -1,4 +1,4 @@
-const NOTEBOOK_API = "http://localhost:8000/api";
+const NOTEBOOK_API = "/api/federated";
 const FEDERATED_API = "/api/federated";
 
 export async function fetchNotebooks() {

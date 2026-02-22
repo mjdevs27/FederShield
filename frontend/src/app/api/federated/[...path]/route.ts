@@ -1,49 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const REMOTE_BASE_URL = 'http://34.93.170.91:8000/api';
+const REMOTE_BASE_URL = 'http://127.0.0.1:8000/api';
 
-export async function GET(req: NextRequest, { params }: { params: { path: string[] } }) {
-    const path = (await params).path.join('/');
+export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
     const searchParams = req.nextUrl.searchParams.toString();
-    const targetUrl = `${REMOTE_BASE_URL}/${path}${searchParams ? '?' + searchParams : ''}`;
-
-    try {
-        const res = await fetch(targetUrl);
-        const data = await res.arrayBuffer();
-
-        const headers = new Headers();
-        res.headers.forEach((value, key) => {
-            if (key.toLowerCase().startsWith('x-')) headers.set(key, value);
-        });
-        headers.set('Content-Type', res.headers.get('Content-Type') || 'application/octet-stream');
-        headers.set('Access-Control-Expose-Headers', '*');
-
-        return new NextResponse(data, { status: res.status, headers });
-    } catch (err) {
-        return NextResponse.json({ error: "Failed to connect to GCP Hub" }, { status: 502 });
-    }
+    const fullPath = (await params).path.join('/') + (searchParams ? '?' + searchParams : '');
+    return handleRequest(req, fullPath, 'GET');
 }
 
-export async function POST(req: NextRequest, { params }: { params: { path: string[] } }) {
-    const path = (await params).path.join('/');
-    const targetUrl = `${REMOTE_BASE_URL}/${path}`;
+export async function POST(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+    return handleRequest(req, (await params).path.join('/'), 'POST');
+}
 
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+    return handleRequest(req, (await params).path.join('/'), 'PUT');
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+    return handleRequest(req, (await params).path.join('/'), 'DELETE');
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+    return handleRequest(req, (await params).path.join('/'), 'PATCH');
+}
+
+async function handleRequest(req: NextRequest, path: string, method: string) {
+    const targetUrl = `${REMOTE_BASE_URL}/${path}`;
     const contentType = req.headers.get('content-type') || '';
 
     try {
         let body;
-        if (contentType.includes('multipart/form-data')) {
-            // Specifically handle multipart for the GCP Hub
-            body = await req.formData();
-        } else {
-            body = await req.json();
+        if (method !== 'GET' && method !== 'HEAD') {
+            if (contentType.includes('multipart/form-data')) {
+                body = await req.formData();
+            } else if (contentType.includes('application/json')) {
+                body = await req.json();
+            }
         }
 
         const res = await fetch(targetUrl, {
-            method: 'POST',
-            // Do NOT set content-type for multipart; let fetch generate boundary
+            method,
             headers: contentType.includes('application/json') ? { 'Content-Type': 'application/json' } : {},
-            body: contentType.includes('multipart/form-data') ? body : JSON.stringify(body)
+            body: body ? (contentType.includes('multipart/form-data') ? body : JSON.stringify(body)) : undefined
         });
 
         const resContentType = res.headers.get('content-type') || '';
@@ -55,6 +53,6 @@ export async function POST(req: NextRequest, { params }: { params: { path: strin
             return new NextResponse(data, { status: res.status });
         }
     } catch (err) {
-        return NextResponse.json({ error: "GCP Hub Communication Error" }, { status: 502 });
+        return NextResponse.json({ error: `GCP Hub ${method} Error` }, { status: 502 });
     }
 }
